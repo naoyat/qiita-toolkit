@@ -31,7 +31,7 @@ def iso_8601_jst(t):
 ## AppleScript生成
 def make_script(title, body, created_at, updated_at, tags, url=None):
     def osa_escape(string):
-        return string.replace('\\', '\\\\').replace('"', '\\"').replace('\n', ' ')
+        return string.replace('\\', '\\\\').replace('"', '\\"')
     def my_datetime(t):
         return time.strftime('my datetime(%Y,%m,%d,%H,%M,%S)', time.localtime(t))
     def make_tag_list(tags):
@@ -57,6 +57,10 @@ tell application "Evernote"
   set updatedAt to %s
   set tagNameList to %s
   set urlStr to %s
+
+  if not exists notebook notebookStr then
+    make new notebook with properties {name:notebookStr}
+  end if
 
   set tagList to {}
   repeat with aTagName in tagNameList
@@ -135,11 +139,11 @@ class KobitoItem :
         body = re.sub(r'  <body>\n<h1>[^\n]*</h1>', r'<body>', body)
 
         script = make_script(title, body, self.created_at, self.updated_at, self.tags, self.url)
-        # print script
 
         sys.stderr.write(iso_8601_jst(self.updated_at))
         sys.stderr.write("「" + self.title + "」")
         sys.stderr.write(" ".join(self.tags) + "\n")
+        # print script
         run_osascript(script)
 
 ## Kobito側のタグを取得
