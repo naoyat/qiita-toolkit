@@ -1,0 +1,13 @@
+{
+  "name": "TeX on Qiita",
+  "version": "0.1",
+  "description": "use TeX-notation on Qiita",
+  "content_scripts": [
+    {
+      "js"     : ["js/jquery.min.js", "js/tex-on-qiita.js"],
+      "matches": ["http://qiita.com/*"],
+      "run_at" : "document_end"
+    }
+  ],
+  "manifest_version": 2
+}
