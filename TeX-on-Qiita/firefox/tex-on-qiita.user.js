@@ -15,7 +15,7 @@ function tex2md() {
     md += RegExp.leftContext + RegExp.$1;
     var texsrc = RegExp.$2;
     text = RegExp.$3 + RegExp.rightContext;
-    md += "![equation](http://chart.apis.google.com/chart?cht=tx&chl=" + encodeURIComponent(texsrc) + ")";
+    md += "![equation](http://chart.apis.google.com/chart?cht=tx&chl=" + encodeURIComponent(texsrc).replace(/\)/g,'%29') + ")";
   }
   md += text;
   $('#item-body')[0].value = md;
