@@ -4,6 +4,7 @@
 // @description Enables TeX-notation on Qiita
 // @include     http://qiita.com/*
 // @require     http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js
+// @version     0.2
 // ==/UserScript==
 
 (function(){
@@ -15,6 +16,7 @@ function tex2md() {
     md += RegExp.leftContext + RegExp.$1;
     var texsrc = RegExp.$2;
     text = RegExp.$3 + RegExp.rightContext;
+    texsrc = texsrc.replace(/\\\[/g,'[').replace(/\\\]/g,']');
     md += "![equation](http://chart.apis.google.com/chart?cht=tx&chl=" + encodeURIComponent(texsrc).replace(/\)/g,'%29') + ")";
   }
   md += text;
@@ -28,7 +30,7 @@ function md2tex() {
     text += RegExp.leftContext + RegExp.$1;
     var texsrc = RegExp.$2;
     md = RegExp.$3 + RegExp.rightContext;
-    text += "[tex:" + decodeURIComponent(texsrc) + "]";
+    text += "[tex:" + decodeURIComponent(texsrc).replace(/\[/g,'\\[').replace(/\]/g,'\\]') + "]";
   }
   text += md;
   $('#item-body')[0].value = text;
