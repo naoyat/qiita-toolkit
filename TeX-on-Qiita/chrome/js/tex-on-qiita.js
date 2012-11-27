@@ -7,8 +7,11 @@ function tex2md() {
     md += RegExp.leftContext + RegExp.$1;
     var texsrc = RegExp.$2;
     text = RegExp.$3 + RegExp.rightContext;
-    texsrc = texsrc.replace(/\\\[/g,'[').replace(/\\\]/g,']');
-    md += "![equation](http://chart.apis.google.com/chart?cht=tx&chl=" + encodeURIComponent(texsrc).replace(/\)/g,'%29') + ")";
+    texsrc = texsrc.replace(/\\\[/g,'[').replace(/\\\]/g,']'); // \[, \]
+    texsrc = texsrc.replace(/\&lt;/g,'<').replace(/\&gt;/g,'>'); // &lt;, &gt;
+    texsrc = encodeURIComponent(texsrc);
+    texsrc = texsrc.replace(/\)/g,'%29');
+    md += "![equation](http://chart.apis.google.com/chart?cht=tx&chl=" + texsrc + ")";
   }
   md += text;
   $('#item-body')[0].value = md;
@@ -21,7 +24,10 @@ function md2tex() {
     text += RegExp.leftContext + RegExp.$1;
     var texsrc = RegExp.$2;
     md = RegExp.$3 + RegExp.rightContext;
-    text += "[tex:" + decodeURIComponent(texsrc).replace(/\[/g,'\\[').replace(/\]/g,'\\]') + "]";
+    texsrc = decodeURIComponent(texsrc);
+    texsrc = texsrc.replace(/\[/g,'\\[').replace(/\]/g,'\\]'); // \[, \]
+    // texsrc = texsrc.replace(/(\\lt|<)/g,'\&lt;').replace(/(\\gt|>)/g,'\&gt;'); // &lt; &gt;
+    text += "[tex:" + texsrc + "]";
   }
   text += md;
   $('#item-body')[0].value = text;

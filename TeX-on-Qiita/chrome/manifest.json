@@ -1,6 +1,6 @@
 {
   "name": "TeX on Qiita",
-  "version": "0.2",
+  "version": "0.3",
   "description": "use TeX-notation on Qiita",
   "content_scripts": [
     {
